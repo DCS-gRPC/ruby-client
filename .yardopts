@@ -1,0 +1,3 @@
+--no-private
+--exclude lib/dcs_pb.rb
+--exclude lib/dcs_services_pb.rb

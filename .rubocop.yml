@@ -1,0 +1,4 @@
+AllCops:
+  Exclude:
+    - lib/dcs_services_pb.rb
+    - lib/dcs_pb.rb
