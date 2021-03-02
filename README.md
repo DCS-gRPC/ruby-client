@@ -22,7 +22,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Instantiate a new client with `Dcs::Grpc::Client.new` and pass in host and port if desired. See documentation for
+more details. 
 
 ## Development
 
