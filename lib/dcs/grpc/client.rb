@@ -67,6 +67,38 @@ module Dcs
       rescue GRPC::BadStatus
         raise Error
       end
+
+      # Stream mission events
+      #
+      # Streams DCS mission events as a series of hash objects and yields them
+      # to the passed in block. Every hash will have a `:time` key and an
+      # `:event` key which corresponds to the type of event. Other key/value
+      # pairs will be present depending on the properties normally associated
+      # with the event
+      #
+      # @note This is a blocking method and will block until an error is raised
+      # @see https://wiki.hoggitworld.com/view/Category:Events
+      # @yield [Hash] A hash representing a DCS event
+      def stream_mission_events
+        @service.stream_events(Dcs::StreamEventsRequest.new).each do |event|
+          yield convert_to_hash(event)
+        end
+      rescue GRPC::BadStatus
+        raise Error
+      end
+
+      private
+
+      def convert_to_hash(event)
+        hash = { time: event.time }
+        event.to_h.each_pair do |key, value|
+          if key != :time && !value.nil?
+            hash[:event] = key
+            hash.merge! value
+          end
+        end
+        hash
+      end
     end
   end
 end
